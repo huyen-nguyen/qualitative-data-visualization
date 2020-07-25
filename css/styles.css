@@ -1,0 +1,22 @@
+/*customize slim select*/
+
+.ss-main .ss-single-selected {
+    font-weight: bold;
+}
+
+.text-option {
+    margin-bottom: 5px;
+}
+
+.ss-main {
+    display: block;
+    float: left;
+    margin: 10px 0;
+}
+
+/* -------- left panel --------- */
+#promptContent {
+    display: inline-block;
+    height: 300px;
+    overflow: auto;
+}
