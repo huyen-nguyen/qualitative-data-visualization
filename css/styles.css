@@ -20,3 +20,8 @@
     height: 300px;
     overflow: auto;
 }
+
+#table-wrapper {
+    display: inline-block;
+    overflow: auto;
+}
