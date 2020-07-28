@@ -135,7 +135,7 @@ function main(){
             .selectAll("g")
             .data(wordtype)
             .enter().append("g")
-            .attr("transform", function(d, i) { return "translate(-60," + (20+ i * 20) + ")"; });
+            .attr("transform", function(d, i) { return "translate(-60," + (10+ i * 20) + ")"; });
 
         legend.append("circle")
             .attr("cx", width - 25)
@@ -264,7 +264,7 @@ function main(){
             return $("#tb").append('<tr>' +
                 '<td >' + (index+1) + '</td>' +
                 '<td >' + hightlight(removeDuplicates(row.Nounchunks)) + '</td>' +
-                '<td style="color: #535353">' + displayHTML(hightlight(row.ResponseOnly)) + '</td>' +
+                '<td style="color: #535353">' + displayHTML(hightlight(row.ResponseText)) + '</td>' +
 
                 '</tr>');
         });
@@ -283,7 +283,7 @@ function main(){
             var replace = " " + selectedWord;
             var re = new RegExp(replace,"g");
 
-            let str = string.replace(re, '<span style="font-weight: bold; color:' + colorWord(selectedType) + '">' + replace + '</span>')
+            let str = string.replace(re, '<span style="font-weight: bold; text-decoration: underline; color:' + colorWord(selectedType) + '">' + replace + '</span>')
             console.log(str)
             return str
         }
