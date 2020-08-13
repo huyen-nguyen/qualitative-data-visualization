@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WordStream</title>
+    <script src="lib/d3.v4.min.js"></script>
+    <script src="https://d3js.org/queue.v1.min.js"></script>
+    <script src="lib/wordstream.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #d8eee7;">
+    <a class="navbar-brand" href="#">Student Journal Text Visualization</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Questions </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="wordstream.html">WordStream <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="pc.html">Parallel Coordinates </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<script>
+
+    d3.csv("data/vis-word-data.csv", function (error, data) {
+        if (error) throw error;
+
+        const removeList = ["%", "d", "-", "thing", "will"]
+        const wordtype = ["VERB", "NOUN", "ADJ"]
+        // console.log(data)
+
+        let arr = data.map((entry, weekIndex) => {
+            let obj = {}
+            console.log(entry)
+            let raw = JSON.parse(entry.Words.split("'").join('"'))
+            let row = d3.keys(raw)
+                .filter(d => !removeList.includes(d))
+                .filter(d => raw[d].count != 1)
+                .map(d => {
+                    return {
+                        text: modify(d),
+                        frequency: raw[d].count,
+                        type: raw[d].type,
+                    }
+                })
+                .sort((a,b) => +b.frequency - +a.frequency)
+            console.log(row)
+
+            wordtype.forEach(type => {
+                obj[type] = []
+                obj[type] = row.filter(d => d.type === type).map(d => {
+                    return {
+                        text: d.text,
+                        frequency:  d.frequency,
+                        topic: type,
+                        id: d.text + weekIndex,
+                    }
+                })
+            })
+
+            return {
+                date: "Week " + entry.JournalEntryWeek,
+                words: obj,
+            }
+        });
+
+        console.log(arr)
+        function modify(word) {
+            if (word === "datum"){
+                return "data"
+            }
+            else if (word === "r"){
+                return "R"
+            }
+            else return word
+        }
+
+        let svg = d3.select("body").append('svg')
+            .attr("width", 1100)
+            .attr("height", 600);
+
+        let config = {
+            topWord: 40,
+            minFont: 11,
+            maxFont: 40,
+            tickFont: 12,
+            legendFont: 12,
+            curve: d3.curveMonotoneX
+        };
+
+        wordstream(svg, arr, config)
+    })
+</script>
+</body>
+</html>

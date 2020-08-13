@@ -17,8 +17,26 @@
 <body>
 
 <!-- As a heading -->
-<nav class="navbar navbar-light" style="background-color: #d8eee7;">
-	<span class="navbar-brand mb-0 h1">Student Journal Text Visualization</span>
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #d8eee7;">
+	<a class="navbar-brand" href="#">Student Journal Text Visualization</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item active">
+				<a class="nav-link" href="index.html">Questions <span class="sr-only">(current)</span></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="wordstream.html">WordStream</a>
+			</li>
+			<li class="nav-item ">
+				<a class="nav-link" href="pc.html">Parallel Coordinates </a>
+			</li>
+		</ul>
+	</div>
 </nav>
 
 <div class="row">
@@ -26,6 +44,7 @@
 	<div class="col-12 col-md-7" id="rightPanel"></div>
 </div>
 <script src="js/main.js"></script>
+<script src="js/const.js"></script>
 
 </body>
 </html>

@@ -47,7 +47,7 @@ function main(){
             .append("option")
             .attr("class", "option")
             .attr("value", (d,i) => i)
-            .html(d => "Prompt " + d.JournalEntryWeek)
+            .html(d => "Week " + d.JournalEntryWeek)
 
         new SlimSelect({
             select: '#single',
@@ -103,7 +103,6 @@ function main(){
     function getWordcloud() {
         let width = document.getElementById('leftWrapper').offsetWidth, height = 500;
 
-        const wordtype = ["VERB", "NOUN", "ADJ"]
         const colorScale = d3.scaleOrdinal(d3.schemeCategory10)
         const removeList = ["%", "d", "-"]
 
@@ -287,16 +286,6 @@ function main(){
             console.log(str)
             return str
         }
-    }
-
-    function colorWord(type) {
-        if (type === "NOUN"){
-            return "#1F77B4"
-        }
-        else if (type === "VERB"){
-            return "#FF7F0E"
-        }
-        else return "#2CA02C"
     }
 
     function displayHTML(string) {
