@@ -1,5 +1,7 @@
 /*customize slim select*/
-
+body {
+    font-size: 0.95rem;
+}
 .ss-main .ss-single-selected {
     font-weight: bold;
 }
@@ -12,6 +14,25 @@
     display: block;
     float: left;
     margin: 10px 0;
+}
+
+/* ----- general ------- */
+.nav-main {
+    background-color: #24292e;
+}
+
+.nav-sub {
+    background-color: #fafbfc;
+    border-bottom: #e1e3e6 1px solid;
+}
+nav a h5{
+    margin: 0;
+}
+
+.nav-sub-text {
+    width: fit-content;
+    border-bottom: #28218a 1.5px solid;
+    padding-bottom: 20px !important;
 }
 
 /* -------- left panel --------- */

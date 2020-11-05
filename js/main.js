@@ -40,7 +40,6 @@ function main(){
     function promptSelection() {
         let leftPanel = d3.select("#leftPanel")
             .append("div")
-            .text("Prompt questions")
             .attr("class", "p-3")
             .attr("id", "leftWrapper")
 
@@ -233,7 +232,6 @@ function main(){
         if (!initTable){
             let rightPanel = d3.select("#rightPanel")
                 .append("div")
-                .text("Details into answers")
                 .attr("class", "p-3")
                 .attr("id", "rightWrapper")
 
