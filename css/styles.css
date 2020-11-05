@@ -31,8 +31,10 @@ nav a h5{
 
 .nav-sub-text {
     width: fit-content;
-    border-bottom: #2123a1 1.5px solid;
+    border-bottom: rgba(63, 42, 161, 0.79) 2px solid;
     padding-bottom: 20px !important;
+    margin-left: 1.65rem;
+
 }
 
 /* -------- left panel --------- */
