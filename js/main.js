@@ -6,21 +6,31 @@ function main(){
     let data
     let initsvg, initTable
     let selectedWord = "@@", selectedType = ""
+    let allchunksObj = {}, allchunks = []
 
     queue()
         .defer(d3.csv, 'data/vis-noun-data.csv')
         .defer(d3.csv, 'data/vis-word-data.csv')
-        .defer(d3.json, 'data/lemma.json')
         .await(run);
 
-    function run(error, records_, words_, lemma_) {
+    function run(error, records_, words_) {
         if (error) throw error;
-
         records = records_;
         words = words_;
 
-        console.log(lemma_)
+        records.forEach(d => {
+            let arr = d.Nounchunks.split(",").filter(e => e.length > 0)
+            arr.forEach(e => {
+                if (!allchunksObj[e]){
+                    allchunksObj[e] = 1
+                }
+                else {
+                    allchunksObj[e] += 1
+                }
+            })
 
+        })
+        console.log(d3.keys(allchunksObj))
         promptSelection()
         getWordcloud()
         displayTable()
@@ -176,7 +186,7 @@ function main(){
             d3.layout.cloud()
                 .size([width,height])
                 .words(data)
-                .rotate(()=>randomRotate(Math.random()))
+                .rotate(()=>0)
                 .fontSize(d=>wordScale(d.frequency))
                 .on("end",draw)
                 .start();
@@ -256,10 +266,8 @@ function main(){
         table.select("tbody").selectAll("*").remove()
 
         let filteredData = records.filter(d => d.JournalEntryWeek == (+weekIndex+1).toString())
-        console.log(filteredData)
 
         filteredData.forEach(function (row, index) {
-            console.log(row)
             return $("#tb").append('<tr>' +
                 '<td >' + (index+1) + '</td>' +
                 '<td >' + hightlight(removeDuplicates(row.Nounchunks)) + '</td>' +
@@ -283,7 +291,6 @@ function main(){
             var re = new RegExp(replace,"g");
 
             let str = string.replace(re, '<span style="font-weight: bold; text-decoration: underline; color:' + colorWord(selectedType) + '">' + replace + '</span>')
-            console.log(str)
             return str
         }
     }

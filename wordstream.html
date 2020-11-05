@@ -4,9 +4,15 @@
     <meta charset="UTF-8">
     <title>WordStream</title>
     <script src="lib/d3.v4.min.js"></script>
+    <script src="lib/d3.v3.min.js"></script>
     <script src="https://d3js.org/queue.v1.min.js"></script>
-    <script src="lib/wordstream.min.js"></script>
+    <script src="js/const.js"></script>
+    <script src="lib/wordstream.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="css/pc.css">
 
 
 </head>
@@ -25,83 +31,11 @@
             <li class="nav-item active">
                 <a class="nav-link" href="wordstream.html">WordStream <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item ">
-                <a class="nav-link" href="pc.html">Parallel Coordinates </a>
-            </li>
         </ul>
     </div>
 </nav>
+<script src="js/wsHandle.js"></script>
+<!--<script src="js/subPC.js"></script>-->
 
-<script>
-
-    d3.csv("data/vis-word-data.csv", function (error, data) {
-        if (error) throw error;
-
-        const removeList = ["%", "d", "-", "thing", "will"]
-        const wordtype = ["VERB", "NOUN", "ADJ"]
-        // console.log(data)
-
-        let arr = data.map((entry, weekIndex) => {
-            let obj = {}
-            console.log(entry)
-            let raw = JSON.parse(entry.Words.split("'").join('"'))
-            let row = d3.keys(raw)
-                .filter(d => !removeList.includes(d))
-                .filter(d => raw[d].count != 1)
-                .map(d => {
-                    return {
-                        text: modify(d),
-                        frequency: raw[d].count,
-                        type: raw[d].type,
-                    }
-                })
-                .sort((a,b) => +b.frequency - +a.frequency)
-            console.log(row)
-
-            wordtype.forEach(type => {
-                obj[type] = []
-                obj[type] = row.filter(d => d.type === type).map(d => {
-                    return {
-                        text: d.text,
-                        frequency:  d.frequency,
-                        topic: type,
-                        id: d.text + weekIndex,
-                    }
-                })
-            })
-
-            return {
-                date: "Week " + entry.JournalEntryWeek,
-                words: obj,
-            }
-        });
-
-        console.log(arr)
-        function modify(word) {
-            if (word === "datum"){
-                return "data"
-            }
-            else if (word === "r"){
-                return "R"
-            }
-            else return word
-        }
-
-        let svg = d3.select("body").append('svg')
-            .attr("width", 1100)
-            .attr("height", 600);
-
-        let config = {
-            topWord: 40,
-            minFont: 11,
-            maxFont: 40,
-            tickFont: 12,
-            legendFont: 12,
-            curve: d3.curveMonotoneX
-        };
-
-        wordstream(svg, arr, config)
-    })
-</script>
 </body>
 </html>
