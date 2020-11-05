@@ -7,6 +7,7 @@ function main(){
     let initsvg, initTable
     let selectedWord = "@@", selectedType = ""
     let allchunksObj = {}, allchunks = []
+    let wcHeight = 480
 
     queue()
         .defer(d3.csv, 'data/vis-noun-data.csv')
@@ -67,7 +68,9 @@ function main(){
         let promptContent = leftPanel
             .append("div")
             .attr("id", "promptContent")
+            .style("height", (window.innerHeight - wcHeight - 220) + "px")
             .html(displayHTML(words[weekIndex].PromptText))
+
 
         // document.getElementsByClassName("placeholder")[0].innerText = "Prompt " + (+weekIndex + 1)
         //
@@ -110,7 +113,7 @@ function main(){
     }
 
     function getWordcloud() {
-        let width = document.getElementById('leftWrapper').offsetWidth, height = 500;
+        let width = document.getElementById('leftWrapper').offsetWidth, height = wcHeight;
 
         const colorScale = d3.scaleOrdinal(d3.schemeCategory10)
         const removeList = ["%", "d", "-"]
@@ -199,6 +202,7 @@ function main(){
                 .data(words)
                 .enter()
                 .append("text")
+                .attr("class", "cloud-text")
                 .style("font-size",d=>d.size +"px")
                 .style("fill", d => colorWord(d.type))
                 .style("font-family", "serif")
@@ -206,6 +210,23 @@ function main(){
                 .attr("transform",d=>("translate(" + [d.x,d.y] +")rotate(" + d.rotate + ")"))
                 .text(d=>d.text === "r" ? "R" : d.text)
                 .style("cursor", "pointer")
+                .on("mouseover", function (d) {
+                    d3.selectAll(".cloud-text")
+                        // .style("text-shadow","-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000")
+                        // .style("opacity", 0.5)
+                    d3.select(this)
+                        .style("stroke-width", "1.5px")
+                        .style("stroke",d => colorWord(d.type))
+                        .style("stroke-opacity","0.7")
+                        .style("opacity", 1)
+                })
+                .on("mouseout", function (d) {
+                    d3.selectAll(".cloud-text")
+                        .style("opacity", 1)
+                        .style("stroke-width", "0px")
+                })
+                .on("mouseleave", function(){
+                })
                 .on("click", function (d) {
                     selectedWord = d.text
                     selectedType = d.type
@@ -238,10 +259,10 @@ function main(){
             let tableIn = rightPanel
                 .append("div")
                 .attr("id", "table-wrapper")
-                .style("height", (window.innerHeight -120) + "px")
+                .style("height", (window.innerHeight -180) + "px")
                 .attr("class", "table-responsive")
                 .append("table")
-                .attr("class", "table mt-2")
+                .attr("class", "table mt-2 table-striped")
                 // .style("table-layout", "fixed")
 
             tableIn.append('thead').append('tr')
