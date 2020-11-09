@@ -1,4 +1,4 @@
-let currentWord, lemma, records, sentenceRecords;
+let currentWord, records, sentenceRecords;
 
 // const selectedField = ["CourseID", "CourseName", "JournalEntryWeek", "StudentId", "YearQuarter", "Sentence"]
 
@@ -62,12 +62,10 @@ var dataSet = [
 queue()
     .defer(d3.csv, 'data/vis-noun-data.csv')
     .defer(d3.csv, "data/vis-word-data.csv")
-    .defer(d3.json, 'data/lemma.json')
     .await(loadData);
 
-function loadData(error, records_, word_, lemma_) {
+function loadData(error, records_, word_) {
     if (error) throw error;
-    lemma = lemma_
     records = records_
 
     const removeList = ["%", "d", "-", "thing", "will"]

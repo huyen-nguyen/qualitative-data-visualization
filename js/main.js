@@ -305,11 +305,12 @@ function main(){
             return d3.keys(obj).join(", ")
         }
 
-        function hightlight(string) {
+        function hightlight(context) {
+            // lemmatize here
             var replace = " " + selectedWord;
             var re = new RegExp(replace,"g");
 
-            let str = string.replace(re, '<span style="font-weight: bold; text-decoration: underline; color:' + colorWord(selectedType) + '">' + replace + '</span>')
+            let str = context.replace(re, '&nbsp;<span style="font-weight: bold; text-decoration: underline; color:' + colorWord(selectedType) + '">' + replace.trim() + '</span>')
             return str
         }
     }
