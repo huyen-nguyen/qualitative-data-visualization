@@ -217,7 +217,7 @@ function main(){
                     d3.select(this)
                         .style("stroke-width", "1.5px")
                         .style("stroke",d => colorWord(d.type))
-                        .style("stroke-opacity","0.7")
+                        // .style("stroke-opacity","0.7")
                         .style("opacity", 1)
                 })
                 .on("mouseout", function (d) {
