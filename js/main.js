@@ -289,12 +289,12 @@ function main(){
         filteredData.forEach(function (row, index) {
             return $("#tb").append('<tr>' +
                 '<td >' + (index+1) + '</td>' +
-                '<td >' + hightlight(removeDuplicates(row.Nounchunks)) + '</td>' +
-                '<td style="color: #535353">' + displayHTML(hightlight(row.ResponseText)) + '</td>' +
-
+                '<td class="context">' + removeDuplicates(row.Nounchunks) + '</td>' +
+                '<td class="context" style="color: #535353">' + displayHTML(row.ResponseText) + '</td>' +
                 '</tr>');
         });
 
+        highlightLemma(selectedWord, selectedType)
 
         function removeDuplicates(string) {
             let obj = {}
