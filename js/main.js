@@ -71,33 +71,6 @@ function main(){
             .style("height", (window.innerHeight - wcHeight - 220) + "px")
             .html(displayHTML(words[weekIndex].PromptText))
 
-
-        // document.getElementsByClassName("placeholder")[0].innerText = "Prompt " + (+weekIndex + 1)
-        //
-        // // reverse selected + modify current
-        // var aTags = document.getElementsByClassName("ss-option-selected");
-        // var found;
-        //
-        // for (var i = 0; i < aTags.length; i++) {
-        //     if (aTags[i].textContent == "Prompt 1") {
-        //         found = aTags[i];
-        //         found.className = "ss-option option"
-        //         break;
-        //     }
-        // }
-        //
-        // var aTags2 = document.getElementsByClassName("ss-option");
-        // var searchText2 = "Prompt " +  (+weekIndex + 1);
-        // var found2;
-        //
-        // for (var i = 0; i < aTags2.length; i++) {
-        //     if (aTags2[i].textContent == searchText2) {
-        //         found2 = aTags2[i];
-        //         found2.className += " ss-disabled ss-option-selected"
-        //         break;
-        //     }
-        // }
-
         // Handler for dropdown value change
         function dropdownChange() {
             weekIndex = d3.select(this).property('value')
