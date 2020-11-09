@@ -289,12 +289,12 @@ function main(){
         filteredData.forEach(function (row, index) {
             return $("#tb").append('<tr>' +
                 '<td >' + (index+1) + '</td>' +
-                '<td >' + hightlight(removeDuplicates(row.Nounchunks)) + '</td>' +
-                '<td style="color: #535353">' + displayHTML(hightlight(row.ResponseText)) + '</td>' +
-
+                '<td class="context">' + removeDuplicates(row.Nounchunks) + '</td>' +
+                '<td class="context" style="color: #535353">' + displayHTML(row.ResponseText) + '</td>' +
                 '</tr>');
         });
 
+        highlightLemma(selectedWord, selectedType)
 
         function removeDuplicates(string) {
             let obj = {}
@@ -305,11 +305,12 @@ function main(){
             return d3.keys(obj).join(", ")
         }
 
-        function hightlight(string) {
+        function hightlight(context) {
+            // lemmatize here
             var replace = " " + selectedWord;
             var re = new RegExp(replace,"g");
 
-            let str = string.replace(re, '<span style="font-weight: bold; text-decoration: underline; color:' + colorWord(selectedType) + '">' + replace + '</span>')
+            let str = context.replace(re, '&nbsp;<span style="font-weight: bold; text-decoration: underline; color:' + colorWord(selectedType) + '">' + replace.trim() + '</span>')
             return str
         }
     }
