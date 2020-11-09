@@ -158,13 +158,15 @@ function drawTable(dataset) {
         "pageLength": 100,
         "deferRender": true,
     });
+
 }
 
 function pullDataFromTextSelection(item) {
     let dataset = ((sentenceRecords
         .filter(d => d.Sentence.includes(item.text))))
-    console.log(dataset)
+    console.log(item)
     drawTable(flattenArray(dataset))
+    highlightLemma(item.text, item.topic)
 }
 
 function flattenArray(arrayofobj) {
