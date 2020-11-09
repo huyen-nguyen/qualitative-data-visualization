@@ -38,3 +38,4 @@ function hexaChangeRGB(hex, alpha) {
         return "rgb(" + r + ", " + g + ", " + b + ")";
     }
 }
+

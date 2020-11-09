@@ -48,6 +48,14 @@ nav a h5{
     overflow: auto;
 }
 
+#leftWrapper2 {
+    display: inline-block;
+    position: absolute;
+    top: 60px;
+    left: 1100px;
+}
+
+
 #table-wrapper {
     display: inline-block;
     overflow: auto;
