@@ -5,26 +5,46 @@ queue()
 
 function run(error, lemma_) {
     if (error) throw error;
-
     lemma = lemma_
-    console.log(lemma)
 }
 
 function highlightLemma(selectedWord, selectedType) {
     let lemmas = lemma[selectedWord]
     if (!lemmas) return
 
+
     var instance = new Mark(document.querySelector("table"));
-    instance.mark(lemmas, {
-        "wildcards": "enabled",
-        "accuracy": "exactly",
+    instance.mark(selectedWord, {
+        "wildcards": "withSpaces",
         "ignoreJoiners": true,
-        "acrossElements": true
+        "acrossElements": true,
+        "accuracy": {
+            "value": "exactly",
+            "limiters": [
+                " ",
+                ".",
+                "\"",
+                "'",
+                "]",
+                "[",
+                "}",
+                "{",
+                ")",
+                "(",
+                "–",
+                "-",
+                ":",
+                ";",
+                "?",
+                "!",
+                ","
+            ]
+        },
     });
 
     d3.selectAll("mark")
         .style("background", hexaChangeRGB(colorWord(selectedType), 0.4))
-        .style("border-radius", "6px")
+        .classed("highlight", true)
 }
 
 function hexaChangeRGB(hex, alpha) {

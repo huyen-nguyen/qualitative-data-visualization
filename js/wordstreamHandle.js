@@ -124,7 +124,7 @@ function promptSelection() {
     let promptContent = leftPanel
         .append("div")
         .attr("id", "promptContent")
-        .style("height", "400px")
+        .style("height", "300px")
         .html(displayHTML(word_[weekIndex].PromptText))
 
     // Handler for dropdown value change
