@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>GRC</title>
+	<script src="lib/d3.v4.min.js"></script>
+	<script src="lib/d3.layout.cloud.js"></script>
+	<script src="dist/mark.min.js" charset="UTF-8"></script>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" rel="stylesheet">
+	<script src="https://d3js.org/queue.v1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.25.0/slimselect.min.js"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.25.0/slimselect.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body>
+
+<!-- As a heading -->
+
+<nav class="navbar navbar-expand-lg navbar-dark nav-main p-3">
+	<a class="navbar-brand" href="index.html"><h5 class="pl-2">Vis Journal Text Visualization</h5></a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item active">
+				<a class="nav-link" href="index.html">Summary <span class="sr-only">(current)</span></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="wordstream.html">WordStream</a>
+			</li>
+		</ul>
+		<span type="button" class="navbar-text btn btn-dark btn-sm">
+            <a href="https://github.com/huyen-nguyen/grc" target="_blank"><i class="fab fa-github fa-1x"></i> GitHub
+            </a>
+        </span>
+	</div>
+</nav>
+
+<nav class="nav-sub">
+	<div class="row">
+		<div class="col-6 col-md-5">
+			<div class="p-3 nav-sub-text"><b>Prompt summary</b></div>
+		</div>
+		<div class="col-12 col-md-7">
+			<div class="p-3 nav-sub-text"><b>Detail into answers</b></div>
+		</div>
+	</div>
+</nav>
+<div class="row">
+	<div class="col-6 col-md-5 pl-4">
+		<div id="leftPanel"></div>
+	</div>
+	<div class="col-12 col-md-7 px-4">
+		<div id="rightPanel"></div>
+	</div>
+</div>
+
+<script>
+	queue()
+		.defer(d3.csv, 'data/prompt.csv')
+		.await(run);
+
+	let questionsArr
+	function run(error, records) {
+		if (error) throw error;
+		console.log(records)
+		questionsArr = expandSentence(records)
+	}
+
+	function expandSentence(records) {
+		let arr = [];
+		records.forEach(rec => {
+			rec["PromptText"]
+				.match(/.*?[.!?)](\s+|$)/g).map(d => d.trim())
+				.forEach(d => {
+					let temp = (({CourseID,CourseName,JournalEntryWeek,PromptText}) =>
+						({CourseID,CourseName,JournalEntryWeek,PromptText}))(rec)
+					temp.Sentence = d
+					// arr.push(temp) // all
+					arr.push(d)
+				})
+		})
+		return arr
+	}
+</script>
+
+</body>
+</html>
