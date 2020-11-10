@@ -140,7 +140,7 @@ function promptSelection() {
 function expandSentence(records) {
     let arr = [];
     records.forEach(rec => {
-        rec["ResponseText"]
+        rec["ResponseOnly"]
             .match(/.*?[.!?](\s+|$)/g).map(d => d.trim())
             .forEach(d => {
                 let temp = (({CourseID, CourseName, JournalEntryWeek, PromptText, StudentId, YearQuarter}) =>

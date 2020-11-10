@@ -1,5 +1,5 @@
 let lemma
-const additionalLemma = ["R", "Java"]
+
 queue()
     .defer(d3.json, 'data/lemma.json')
     .await(run);

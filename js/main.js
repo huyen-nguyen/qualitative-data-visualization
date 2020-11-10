@@ -257,7 +257,7 @@ function main(){
             return $("#tb").append('<tr>' +
                 '<td >' + (index+1) + '</td>' +
                 '<td class="context">' + removeDuplicates(row.Nounchunks) + '</td>' +
-                '<td class="context">' + displayHTML(row.ResponseText) + '</td>' +
+                '<td class="context">' + displayHTML(row.ResponseOnly) + '</td>' +
                 '</tr>');
         });
 
