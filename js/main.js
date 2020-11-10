@@ -242,7 +242,7 @@ function main(){
                     else return "65%"
                 })
                 .attr("class", "th-data")
-                .text(d => d)
+                .html(d => d === "Topic" ? d + '&nbsp;<span id="descriptive" ">[phrases]</span>' : d)
 
             tableIn.append('tbody').attr("id", "tb");
             initTable = true

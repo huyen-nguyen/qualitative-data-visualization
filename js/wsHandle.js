@@ -4,9 +4,9 @@ let word_
 
 const selectedField = ["JournalEntryWeek", "StudentId", "YearQuarter", "Sentence"]
 
-const wsPanel = {width: 1100, height: 600}
+const wsPanel = {width: 1090, height: 600}
 
-let svg = d3.select("body").append('svg')
+let svg = d3.select("#wsPanel").append('svg')
     .attr("width", wsPanel.width)
     .attr("height", wsPanel.height)
 
@@ -85,19 +85,16 @@ function loadData(error, records_, word__) {
     promptSelection()
     wordstream(svg, arr, config)
     sentenceRecords = expandSentence(records)
-
-
-
-
-
 }
 
 function promptSelection() {
     let weekIndex = 0
 
-    let leftPanel = d3.select("body")
+    let leftPanel = d3.select("#referBox")
         .append("div")
-        .attr("class", "p-3")
+        // .attr("class", "p-1")
+        // .style("left", (wsPanel.width) + "px")
+        .style("width", (window.innerWidth - wsPanel.width - 30) + "px")
         .attr("id", "leftWrapper2")
 
     let dropdown = leftPanel
@@ -124,7 +121,6 @@ function promptSelection() {
     let promptContent = leftPanel
         .append("div")
         .attr("id", "promptContent")
-        .style("height", "300px")
         .html(displayHTML(word_[weekIndex].PromptText))
 
     // Handler for dropdown value change
@@ -167,7 +163,7 @@ function drawTable(dataset) {
     $(table.node()).DataTable({
         data: dataset,
         columns: title(selectedField),
-        "pageLength": 10,
+        "pageLength": 25,
         "deferRender": true,
     });
 
@@ -195,7 +191,7 @@ function flattenArray(arrayofobj) {
 function title() {
     return selectedField.map(d => {
         return {
-            title: d
+            title: d === "StudentId" ? "Student#" : d
         }
     })
 }

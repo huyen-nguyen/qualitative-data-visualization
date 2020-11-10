@@ -9,6 +9,7 @@
     <script src="https://d3js.org/queue.v1.min.js"></script>
     <script src="js/const.js"></script>
     <script src="lib/wordstream.js"></script>
+    <link href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -35,10 +36,39 @@
                 <a class="nav-link" href="wordstream.html">WordStream <span class="sr-only">(current)</span></a>
             </li>
         </ul>
+        <span type="button" class="navbar-text btn btn-dark btn-sm">
+            <a href="https://github.com/huyen-nguyen/grc" target="_blank"><i class="fab fa-github fa-1x"></i> GitHub
+            </a>
+        </span>
     </div>
 </nav>
+<nav class="nav-sub">
+    <div class="row">
+        <div class="col-6 col-md-7">
+            <div class="p-3 nav-sub-text"><b>WordStream Visualization</b></div>
+        </div>
+        <div class="col-12 col-md-5">
+            <div class="ml-5">
+                <div class="p-3 ml-5 nav-sub-text">
+                    <b>Course Reference</b></div>
+                </div>
+        </div>
+    </div>
+</nav>
+<div class="row">
+    <div class="col-6 col-md-7">
+        <div id="wsPanel"></div>
+    </div>
+    <div class="col-12 col-md-5">
+        <div class="ml-5">
+            <div class="pt-3 ml-5">
+                <h3>Intro to Data Visualization BIS233</h3>
+                <div id="referBox"></div>
+        </div>
+    </div>
+</div>
 <script src="js/lemma.js"></script>
-<script src="js/wordstreamHandle.js"></script>
+<script src="js/wsHandle.js"></script>
 
 </body>
 </html>

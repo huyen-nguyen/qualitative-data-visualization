@@ -1,6 +1,7 @@
 /*customize slim select*/
 body {
     font-size: 0.95rem;
+    /*overflow-x: hidden;*/
 }
 .ss-main .ss-single-selected {
     font-weight: bold;
@@ -17,6 +18,13 @@ body {
 }
 
 /* ----- general ------- */
+.navbar-brand {
+
+}
+.navbar a:hover {
+    opacity: 0.4;
+    transition: 0.3s;
+}
 .nav-main {
     background-color: #24292e;
 }
@@ -34,7 +42,14 @@ nav a h5{
     border-bottom: rgba(63, 42, 161, 0.79) 2px solid;
     padding-bottom: 20px !important;
     margin-left: 1.65rem;
+}
 
+nav div span a{
+    line-height: 0.1;
+}
+
+nav div span a:hover{
+    text-decoration: none;
 }
 
 /* -------- left panel --------- */
@@ -50,15 +65,17 @@ nav a h5{
 
 #leftWrapper2 {
     display: inline-block;
-    position: absolute;
-    top: 300px;
-    left: 1100px;
 }
 
 
 #table-wrapper {
     display: inline-block;
     overflow: auto;
+}
+
+#descriptive {
+    color: #727c85;
+    font-weight: normal;
 }
 
 /* --- table ----*/
