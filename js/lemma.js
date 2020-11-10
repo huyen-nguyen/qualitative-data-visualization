@@ -1,4 +1,5 @@
 let lemma
+const additionalLemma = ["R", "Java"]
 queue()
     .defer(d3.json, 'data/lemma.json')
     .await(run);
@@ -9,12 +10,13 @@ function run(error, lemma_) {
 }
 
 function highlightLemma(selectedWord, selectedType) {
-    let lemmas = lemma[selectedWord]
-    if (!lemmas) return
+    if (selectedWord.length < 0) return  // empty string
 
+    let lemmas = lemma[selectedWord] ? lemma[selectedWord]: [selectedWord] // get additional if dictionary isn't
+    // enough
 
     var instance = new Mark(document.querySelector("table"));
-    instance.mark(selectedWord, {
+    instance.mark(lemmas, {
         "wildcards": "withSpaces",
         "ignoreJoiners": true,
         "acrossElements": true,
@@ -37,7 +39,8 @@ function highlightLemma(selectedWord, selectedType) {
                 ";",
                 "?",
                 "!",
-                ","
+                ",",
+                "/",
             ]
         },
     });
@@ -45,6 +48,7 @@ function highlightLemma(selectedWord, selectedType) {
     d3.selectAll("mark")
         .style("background", hexaChangeRGB(colorWord(selectedType), 0.4))
         .classed("highlight", true)
+        // .html(selectedWord + '<span>' + selectedType + '</span>')
 }
 
 function hexaChangeRGB(hex, alpha) {

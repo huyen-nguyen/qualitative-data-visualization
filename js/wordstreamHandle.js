@@ -167,7 +167,7 @@ function drawTable(dataset) {
     $(table.node()).DataTable({
         data: dataset,
         columns: title(selectedField),
-        "pageLength": 100,
+        "pageLength": 10,
         "deferRender": true,
     });
 
@@ -176,7 +176,6 @@ function drawTable(dataset) {
 function pullDataFromTextSelection(item) {
     let dataset = ((sentenceRecords
         .filter(d => d.Sentence.includes(item.text))))
-    console.log(item)
     drawTable(flattenArray(dataset))
     highlightLemma(item.text, item.topic)
 }
@@ -200,19 +199,3 @@ function title() {
         }
     })
 }
-
-// $.fn.dataTable.ext.search.push(
-//     function (settings, data, dataIndex) {
-//         var min = new Date($('#min_time').val());
-//         var max = new Date($('#max_time').val());
-//         var age = new Date(data[0]); // use data for the age column
-//
-//         if ((isNaN(min.getTime()) && isNaN(max.getTime())) ||
-//             (isNaN(min.getTime()) && age <= max) ||
-//             (min <= age && isNaN(max.getTime())) ||
-//             (min <= age && age <= max)) {
-//             return true;
-//         }
-//         return false;
-//     }
-// );

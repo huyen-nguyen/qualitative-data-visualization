@@ -67,14 +67,23 @@ nav a h5{
 }
 
 /* ----- marking highlighting ------ */
-/*.context {*/
-/*    position: relative;*/
-/*}*/
+
 .highlight {
     padding: 2px 5px;
     margin: 0;
     line-height: 1;
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
-    border-radius: 6px;
+    border-radius: 0.35rem;
 }
+
+/*mark span{*/
+/*    font-size: 0.6em;*/
+/*    font-weight: bold;*/
+/*    line-height: 1;*/
+/*    border-radius: 0.35em;*/
+/*    text-transform: uppercase;*/
+/*    !* vertical-align: middle; *!*/
+/*    margin-left: 0.3rem;*/
+/*    color: #444956;*/
+/*}*/

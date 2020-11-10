@@ -31,7 +31,6 @@ function main(){
             })
 
         })
-        console.log(d3.keys(allchunksObj))
         promptSelection()
         getWordcloud()
         displayTable()
@@ -184,14 +183,10 @@ function main(){
                 .text(d=>d.text === "r" ? "R" : d.text)
                 .style("cursor", "pointer")
                 .on("mouseover", function (d) {
-                    d3.selectAll(".cloud-text")
-                        // .style("text-shadow","-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000")
-                        // .style("opacity", 0.5)
                     d3.select(this)
-                        .style("stroke-width", "1.5px")
+                        .style("stroke-width", "0.1rem")
                         .style("stroke",d => colorWord(d.type))
                         // .style("stroke-opacity","0.7")
-                        .style("opacity", 1)
                 })
                 .on("mouseout", function (d) {
                     d3.selectAll(".cloud-text")
@@ -203,7 +198,6 @@ function main(){
                 .on("click", function (d) {
                     selectedWord = d.text
                     selectedType = d.type
-                    console.log(d)
                     displayTable()
                 })
         }
@@ -263,7 +257,7 @@ function main(){
             return $("#tb").append('<tr>' +
                 '<td >' + (index+1) + '</td>' +
                 '<td class="context">' + removeDuplicates(row.Nounchunks) + '</td>' +
-                '<td class="context" style="color: #535353">' + displayHTML(row.ResponseText) + '</td>' +
+                '<td class="context">' + displayHTML(row.ResponseText) + '</td>' +
                 '</tr>');
         });
 
@@ -276,15 +270,6 @@ function main(){
                 obj[d] = true
             })
             return d3.keys(obj).join(", ")
-        }
-
-        function hightlight(context) {
-            // lemmatize here
-            var replace = " " + selectedWord;
-            var re = new RegExp(replace,"g");
-
-            let str = context.replace(re, '&nbsp;<span style="font-weight: bold; text-decoration: underline; color:' + colorWord(selectedType) + '">' + replace.trim() + '</span>')
-            return str
         }
     }
 
