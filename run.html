@@ -62,32 +62,48 @@
 </div>
 
 <script>
+	// --- Separate sentences from question bunch ---
+	// queue()
+	// 	.defer(d3.csv, 'data/prompt.csv')
+	// 	.await(run);
+	//
+	// let questionsArr
+	// function run(error, records) {
+	// 	if (error) throw error;
+	// 	console.log(records)
+	// 	questionsArr = expandSentence(records)
+	// }
+	//
+	// function expandSentence(records) {
+	// 	let arr = [];
+	// 	records.forEach(rec => {
+	// 		rec["PromptText"]
+	// 			.match(/.*?[.!?)](\s+|$)/g).map(d => d.trim())
+	// 			.forEach(d => {
+	// 				let temp = (({CourseID,CourseName,JournalEntryWeek,PromptText}) =>
+	// 					({CourseID,CourseName,JournalEntryWeek,PromptText}))(rec)
+	// 				temp.Sentence = d
+	// 				// arr.push(temp) // all
+	// 				arr.push(d)
+	// 			})
+	// 	})
+	// 	return arr
+	// }
+
+	let arr = ""
 	queue()
-		.defer(d3.csv, 'data/prompt.csv')
+		.defer(d3.csv, 'data/vis-noun-data.csv')
 		.await(run);
 
-	let questionsArr
-	function run(error, records) {
+	function run(error, data) {
 		if (error) throw error;
-		console.log(records)
-		questionsArr = expandSentence(records)
+		console.log(data)
+		data.filter(d => d.JournalEntryWeek === "1").forEach(d => arr += d.ResponseOnly)
+		console.log(arr)
+
 	}
 
-	function expandSentence(records) {
-		let arr = [];
-		records.forEach(rec => {
-			rec["PromptText"]
-				.match(/.*?[.!?)](\s+|$)/g).map(d => d.trim())
-				.forEach(d => {
-					let temp = (({CourseID,CourseName,JournalEntryWeek,PromptText}) =>
-						({CourseID,CourseName,JournalEntryWeek,PromptText}))(rec)
-					temp.Sentence = d
-					// arr.push(temp) // all
-					arr.push(d)
-				})
-		})
-		return arr
-	}
+
 </script>
 
 </body>

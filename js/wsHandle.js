@@ -4,7 +4,7 @@ let word_
 
 const selectedField = ["JournalEntryWeek", "StudentId", "YearQuarter", "Sentence"]
 
-const wsPanel = {width: 1090, height: 600}
+const wsPanel = {width: 1160, height: 600}
 
 let svg = d3.select("#wsPanel").append('svg')
     .attr("width", wsPanel.width)
@@ -35,9 +35,10 @@ function loadData(error, records_, word__) {
     let arr = word_.map((entry, weekIndex) => {
         let obj = {}
         let raw = JSON.parse(entry.Words.split("'").join('"'))
+        console.log(raw)
         let row = d3.keys(raw)
             .filter(d => !removeList.includes(d))
-            .filter(d => raw[d].count != 1)
+            // .filter(d => raw[d].count > 1)
             .map(d => {
                 return {
                     text: modify(d),
@@ -47,6 +48,7 @@ function loadData(error, records_, word__) {
             })
             .sort((a, b) => +b.frequency - +a.frequency)
 
+        console.log(row)
         wordtype.forEach(type => {
             obj[type] = []
             obj[type] = row.filter(d => d.type === type).map(d => {
@@ -74,7 +76,7 @@ function loadData(error, records_, word__) {
     }
 
     let config = {
-        topWord: 40,
+        topWord: 35,
         minFont: 11,
         maxFont: 40,
         tickFont: 12,
