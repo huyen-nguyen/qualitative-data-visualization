@@ -3,11 +3,11 @@ let sentenceRecords,
         "VERB": "",
         "NOUN": "",
         "ADJ": "",
-}, superObj = {};
+    }, superObj = {};
 let records, word_
 // const selectedField = ["CourseID", "CourseName", "JournalEntryWeek", "StudentId", "YearQuarter", "Sentence"]
 const removeList = ["%", "d", "-", "thing", "will"]
-const wsPanel = {width: 1160, height: 600}
+const wsPanel = {width: (window.innerWidth * 2/3), height: 600}
 const selectedField = ["JournalEntryWeek", "StudentId", "YearQuarter", "Sentence"]
 
 queue()
@@ -27,7 +27,7 @@ function loadData(error, records_, word__) {
     d3.select("body").append('div')
         .style("display", "block")
         .attr("class", "m-3")
-        .attr("width", (+wsPanel.width) + "px")
+        // .attr("width", (+wsPanel.width) + "px")
         .attr("height", (+window.innerHeight - wsPanel.height) + "px")
         .attr("id", "tablediv")
 
@@ -90,7 +90,8 @@ function promptSelection() {
 
     let leftPanel = d3.select("#referBox")
         .append("div")
-        .style("width", (window.innerWidth - wsPanel.width - 30) + "px")
+        .attr("class", "pr-2")
+        // .style("width", (window.innerWidth - wsPanel.width - 30) + "px")
         .attr("id", "leftWrapper2")
 
     let dropdown = leftPanel
@@ -105,7 +106,7 @@ function promptSelection() {
         .enter()
         .append("option")
         .attr("class", "option")
-        .attr("value", (d,i) => i)
+        .attr("value", (d, i) => i)
         .html(d => "Week " + d.JournalEntryWeek)
 
     new SlimSelect({
@@ -128,6 +129,7 @@ function promptSelection() {
             .html(displayHTML(word_[+weekIndex].PromptText))
 
     }
+
     function displayHTML(string) {
         return string.replace(/\n/g, '<br>')
     }
@@ -153,10 +155,10 @@ function pullDataFromTextSelection() {
     let values = Object.values(wordQueue)
     if (values.some(d => d.length > 0)) {
         // something in it
-        let superArray = values.filter(d => d.length > 0).map(d => lemma[d] ? lemma[d]: [d.toLowerCase()])
+        let superArray = values.filter(d => d.length > 0).map(d => lemma[d] ? lemma[d] : [d.toLowerCase()])
 
         values.filter(d => d.length > 0).forEach(d => {
-            let lemmaflat = lemma[d] ? lemma[d]: [d.toLowerCase()]
+            let lemmaflat = lemma[d] ? lemma[d] : [d.toLowerCase()]
             lemmaflat.forEach(l => {
                 superObj[l] = d
             })
@@ -164,7 +166,7 @@ function pullDataFromTextSelection() {
 
         let dataset = ((sentenceRecords
             .filter(d => {
-                let wordArr = d.Sentence.toLowerCase().split(/[.,\/ -:;!?"'#$%^&*]/).filter(d => d.length>0)
+                let wordArr = d.Sentence.toLowerCase().split(/[.,\/ -:;!?"'#$%^&*]/).filter(d => d.length > 0)
                 return superArray.every(lemmas => wordArr.filter(d => lemmas.includes(d)).length > 0)
             })))
 
@@ -173,8 +175,7 @@ function pullDataFromTextSelection() {
             highlightLemma2(wordQueue[item], item)
         })
 
-    }
-    else {
+    } else {
         drawTable(flattenArray(sentenceRecords))
     }
 }
@@ -183,7 +184,7 @@ function highlightLemma2(selectedWord, selectedType) {
     if (selectedWord.length < 0) return  // empty string
 
     if (document.getElementsByTagName('td').length === 1) return
-    let lemmas = lemma[selectedWord] ? lemma[selectedWord]: [selectedWord] // get additional if dictionary isn't
+    let lemmas = lemma[selectedWord] ? lemma[selectedWord] : [selectedWord] // get additional if dictionary isn't
     // enough
 
     var instance = new Mark(document.querySelector("table"));
@@ -217,14 +218,14 @@ function highlightLemma2(selectedWord, selectedType) {
     });
 
     d3.selectAll("mark")
-        .style("background", function(){
+        .style("background", function () {
             console.log(this.innerHTML)
             console.log(superObj[this.innerHTML.split("<")[0].toLowerCase()])
             return hexaChangeRGB(colorWord(getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])), 0.3)
         })
         .classed("highlight", true)
-        .html(function (){
-            return this.innerHTML.split("<")[0] + '<span style="color: ' + colorWord(getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])) + '">' + getKeyByValue(wordQueue,superObj[this.innerHTML.split("<")[0].toLowerCase()]) + '</span>'
+        .html(function () {
+            return this.innerHTML.split("<")[0] + '<span style="color: ' + colorWord(getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])) + '">' + getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()]) + '</span>'
             // return this.innerHTML.split("<")[0] + '<span>' + getKeyByValue(wordQueue,superObj[this.innerHTML.split("<")[0].toLowerCase()]) + '</span>'
 
         })
@@ -232,47 +233,6 @@ function highlightLemma2(selectedWord, selectedType) {
     // .html(selectedWord + '<span>' + selectedType + '</span>')
 }
 
-// function highlightLemma(selectedWord, selectedType) {
-//     if (selectedWord.length < 0) return  // empty string
-//
-//     let lemmas = lemma[selectedWord] ? lemma[selectedWord]: [selectedWord] // get additional if dictionary isn't
-//     // enough
-//
-//     var instance = new Mark(document.querySelector("table"));
-//     instance.mark(lemmas, {
-//         "wildcards": "withSpaces",
-//         "ignoreJoiners": true,
-//         "acrossElements": true,
-//         "accuracy": {
-//             "value": "exactly",
-//             "limiters": [
-//                 " ",
-//                 ".",
-//                 "\"",
-//                 "'",
-//                 "]",
-//                 "[",
-//                 "}",
-//                 "{",
-//                 ")",
-//                 "(",
-//                 "–",
-//                 "-",
-//                 ":",
-//                 ";",
-//                 "?",
-//                 "!",
-//                 ",",
-//                 "/",
-//             ]
-//         },
-//     });
-//
-//     d3.selectAll("mark")
-//         .style("background", hexaChangeRGB(colorWord(selectedType), 0.4))
-//         .classed("highlight", true)
-//     // .html(selectedWord + '<span>' + selectedType + '</span>')
-// }
 
 function drawTable(dataset) {
     let tablediv = d3.select('#tablediv');
