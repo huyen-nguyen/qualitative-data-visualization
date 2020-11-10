@@ -73,7 +73,6 @@ function main(){
         // Handler for dropdown value change
         function dropdownChange() {
             weekIndex = d3.select(this).property('value')
-            console.log(weekIndex)
 
             promptContent
                 .html(displayHTML(words[+weekIndex].PromptText))

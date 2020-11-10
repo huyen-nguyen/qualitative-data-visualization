@@ -123,7 +123,6 @@ function promptSelection() {
     // Handler for dropdown value change
     function dropdownChange() {
         weekIndex = d3.select(this).property('value')
-        console.log(weekIndex)
 
         promptContent
             .html(displayHTML(word_[+weekIndex].PromptText))
@@ -219,8 +218,6 @@ function highlightLemma2(selectedWord, selectedType) {
 
     d3.selectAll("mark")
         .style("background", function () {
-            console.log(this.innerHTML)
-            console.log(superObj[this.innerHTML.split("<")[0].toLowerCase()])
             return hexaChangeRGB(colorWord(getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])), 0.3)
         })
         .classed("highlight", true)
