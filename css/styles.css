@@ -51,7 +51,7 @@ nav a h5{
 #leftWrapper2 {
     display: inline-block;
     position: absolute;
-    top: 60px;
+    top: 300px;
     left: 1100px;
 }
 
@@ -66,3 +66,15 @@ nav a h5{
 .table-striped tbody tr:nth-of-type(odd){background-color: #f6f8fa
 }
 
+/* ----- marking highlighting ------ */
+/*.context {*/
+/*    position: relative;*/
+/*}*/
+.highlight {
+    padding: 2px 5px;
+    margin: 0;
+    line-height: 1;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    border-radius: 6px;
+}
