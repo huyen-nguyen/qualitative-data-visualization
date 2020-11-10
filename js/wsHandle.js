@@ -172,8 +172,13 @@ function drawTable(dataset) {
 }
 
 function pullDataFromTextSelection(item) {
+    let lemmas = lemma[item.text] ? lemma[item.text]: [item.text] // get additional if dictionary isn't
+
     let dataset = ((sentenceRecords
-        .filter(d => d.Sentence.includes(item.text))))
+        .filter(d => {
+            let wordArr = d.Sentence.toLowerCase().split(/[.,\/ -:;!?"'#$%^&*]/).filter(d => d.length>0)
+            return wordArr.filter(d => lemmas.includes(d)).length > 0
+        })))
     drawTable(flattenArray(dataset))
     highlightLemma(item.text, item.topic)
 }
