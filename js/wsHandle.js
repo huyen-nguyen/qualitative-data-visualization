@@ -71,7 +71,7 @@ function loadData(error, records_, word__) {
     }
 
     let config = {
-        topWord: 35,
+        topWord: 40,
         minFont: 11,
         maxFont: 40,
         tickFont: 12,
