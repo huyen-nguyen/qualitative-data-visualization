@@ -1,4 +1,9 @@
-let sentenceRecords;
+let sentenceRecords,
+    wordQueue = {
+        "VERB": "",
+        "NOUN": "",
+        "ADJ": "",
+}, superObj = {};
 let records, word_
 // const selectedField = ["CourseID", "CourseName", "JournalEntryWeek", "StudentId", "YearQuarter", "Sentence"]
 const removeList = ["%", "d", "-", "thing", "will"]
@@ -34,7 +39,7 @@ function loadData(error, records_, word__) {
             // .filter(d => raw[d].count > 1)
             .map(d => {
                 return {
-                    text: d !== "r" ? d : "R" ,
+                    text: modify(d),
                     frequency: d !== "data" ? raw[d].count : raw["data"].count + raw["datum"].count,
                     type: raw[d].type,
                 }
@@ -77,6 +82,7 @@ function loadData(error, records_, word__) {
     promptSelection()
     wordstream(svg, arr, config)
     sentenceRecords = expandSentence(records)
+    drawTable(flattenArray(sentenceRecords))
 }
 
 function promptSelection() {
@@ -142,6 +148,132 @@ function expandSentence(records) {
     return arr
 }
 
+function pullDataFromTextSelection() {
+    // use wordQueue
+    let values = Object.values(wordQueue)
+    if (values.some(d => d.length > 0)) {
+        // something in it
+        let superArray = values.filter(d => d.length > 0).map(d => lemma[d] ? lemma[d]: [d.toLowerCase()])
+
+        values.filter(d => d.length > 0).forEach(d => {
+            let lemmaflat = lemma[d] ? lemma[d]: [d.toLowerCase()]
+            lemmaflat.forEach(l => {
+                superObj[l] = d
+            })
+        })
+
+        let dataset = ((sentenceRecords
+            .filter(d => {
+                let wordArr = d.Sentence.toLowerCase().split(/[.,\/ -:;!?"'#$%^&*]/).filter(d => d.length>0)
+                return superArray.every(lemmas => wordArr.filter(d => lemmas.includes(d)).length > 0)
+            })))
+
+        drawTable(flattenArray(dataset))
+        d3.keys(wordQueue).filter(d => !!wordQueue[d]).forEach(item => {
+            highlightLemma2(wordQueue[item], item)
+        })
+
+    }
+    else {
+        drawTable(flattenArray(sentenceRecords))
+    }
+}
+
+function highlightLemma2(selectedWord, selectedType) {
+    if (selectedWord.length < 0) return  // empty string
+
+    if (document.getElementsByTagName('td').length === 1) return
+    let lemmas = lemma[selectedWord] ? lemma[selectedWord]: [selectedWord] // get additional if dictionary isn't
+    // enough
+
+    var instance = new Mark(document.querySelector("table"));
+    instance.mark(lemmas, {
+        "wildcards": "withSpaces",
+        "ignoreJoiners": true,
+        "acrossElements": true,
+        "accuracy": {
+            "value": "exactly",
+            "limiters": [
+                " ",
+                ".",
+                "\"",
+                "'",
+                "]",
+                "[",
+                "}",
+                "{",
+                ")",
+                "(",
+                "–",
+                "-",
+                ":",
+                ";",
+                "?",
+                "!",
+                ",",
+                "/",
+            ]
+        },
+    });
+
+    d3.selectAll("mark")
+        .style("background", function(){
+            console.log(this.innerHTML)
+            console.log(superObj[this.innerHTML.split("<")[0].toLowerCase()])
+            return hexaChangeRGB(colorWord(getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])), 0.3)
+        })
+        .classed("highlight", true)
+        .html(function (){
+            return this.innerHTML.split("<")[0] + '<span style="color: ' + colorWord(getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])) + '">' + getKeyByValue(wordQueue,superObj[this.innerHTML.split("<")[0].toLowerCase()]) + '</span>'
+            // return this.innerHTML.split("<")[0] + '<span>' + getKeyByValue(wordQueue,superObj[this.innerHTML.split("<")[0].toLowerCase()]) + '</span>'
+
+        })
+
+    // .html(selectedWord + '<span>' + selectedType + '</span>')
+}
+
+// function highlightLemma(selectedWord, selectedType) {
+//     if (selectedWord.length < 0) return  // empty string
+//
+//     let lemmas = lemma[selectedWord] ? lemma[selectedWord]: [selectedWord] // get additional if dictionary isn't
+//     // enough
+//
+//     var instance = new Mark(document.querySelector("table"));
+//     instance.mark(lemmas, {
+//         "wildcards": "withSpaces",
+//         "ignoreJoiners": true,
+//         "acrossElements": true,
+//         "accuracy": {
+//             "value": "exactly",
+//             "limiters": [
+//                 " ",
+//                 ".",
+//                 "\"",
+//                 "'",
+//                 "]",
+//                 "[",
+//                 "}",
+//                 "{",
+//                 ")",
+//                 "(",
+//                 "–",
+//                 "-",
+//                 ":",
+//                 ";",
+//                 "?",
+//                 "!",
+//                 ",",
+//                 "/",
+//             ]
+//         },
+//     });
+//
+//     d3.selectAll("mark")
+//         .style("background", hexaChangeRGB(colorWord(selectedType), 0.4))
+//         .classed("highlight", true)
+//     // .html(selectedWord + '<span>' + selectedType + '</span>')
+// }
+
 function drawTable(dataset) {
     let tablediv = d3.select('#tablediv');
     tablediv.selectAll('*').remove();
@@ -157,18 +289,6 @@ function drawTable(dataset) {
         "deferRender": true,
     });
 
-}
-
-function pullDataFromTextSelection(item) {
-    let lemmas = lemma[item.text] ? lemma[item.text]: [item.text] // get additional if dictionary isn't
-
-    let dataset = ((sentenceRecords
-        .filter(d => {
-            let wordArr = d.Sentence.toLowerCase().split(/[.,\/ -:;!?"'#$%^&*]/).filter(d => d.length>0)
-            return wordArr.filter(d => lemmas.includes(d)).length > 0
-        })))
-    drawTable(flattenArray(dataset))
-    highlightLemma(item.text, item.topic)
 }
 
 function flattenArray(arrayofobj) {

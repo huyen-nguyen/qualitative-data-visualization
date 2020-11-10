@@ -94,13 +94,13 @@ nav div span a:hover{
     border-radius: 0.35rem;
 }
 
-/*mark span{*/
-/*    font-size: 0.6em;*/
-/*    font-weight: bold;*/
-/*    line-height: 1;*/
-/*    border-radius: 0.35em;*/
-/*    text-transform: uppercase;*/
-/*    !* vertical-align: middle; *!*/
-/*    margin-left: 0.3rem;*/
-/*    color: #444956;*/
-/*}*/
+mark span{
+    font-size: 0.6em;
+    font-weight: bold;
+    line-height: 1;
+    border-radius: 0.35em;
+    text-transform: uppercase;
+    /* vertical-align: middle; */
+    margin-left: 0.3rem;
+    color: #424242;
+}

@@ -184,7 +184,7 @@ function main(){
                 .style("cursor", "pointer")
                 .on("mouseover", function (d) {
                     d3.select(this)
-                        .style("stroke-width", "0.1rem")
+                        .style("stroke-width", "1.5px")
                         .style("stroke",d => colorWord(d.type))
                         // .style("stroke-opacity","0.7")
                 })

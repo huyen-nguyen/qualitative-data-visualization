@@ -50,7 +50,9 @@ function highlightLemma(selectedWord, selectedType) {
         .classed("highlight", true)
         // .html(selectedWord + '<span>' + selectedType + '</span>')
 }
-
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}
 function hexaChangeRGB(hex, alpha) {
     var r = parseInt(hex.slice(1, 3), 16),
         g = parseInt(hex.slice(3, 5), 16),
