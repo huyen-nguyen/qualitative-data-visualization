@@ -1,22 +1,9 @@
-let currentWord, records, sentenceRecords;
-let word_
+let sentenceRecords;
+let records, word_
 // const selectedField = ["CourseID", "CourseName", "JournalEntryWeek", "StudentId", "YearQuarter", "Sentence"]
-
-const selectedField = ["JournalEntryWeek", "StudentId", "YearQuarter", "Sentence"]
-
+const removeList = ["%", "d", "-", "thing", "will"]
 const wsPanel = {width: 1160, height: 600}
-
-let svg = d3.select("#wsPanel").append('svg')
-    .attr("width", wsPanel.width)
-    .attr("height", wsPanel.height)
-
-let wsDetail = d3.select("body").append('div')
-    .style("display", "block")
-    .attr("class", "m-3 mt-5")
-    .attr("width", (+wsPanel.width) + "px")
-    .attr("height", (+window.innerHeight - wsPanel.height) + "px")
-    .attr("id", "tablediv")
-
+const selectedField = ["JournalEntryWeek", "StudentId", "YearQuarter", "Sentence"]
 
 queue()
     .defer(d3.csv, 'data/vis-noun-data.csv')
@@ -26,29 +13,34 @@ queue()
 function loadData(error, records_, word__) {
     if (error) throw error;
     records = records_
-
     word_ = word__
-    const removeList = ["%", "d", "-", "thing", "will"]
-    const wordtype = ["VERB", "NOUN", "ADJ"]
-    // console.log(data)
+
+    let svg = d3.select("#wsPanel").append('svg')
+        .attr("width", wsPanel.width)
+        .attr("height", wsPanel.height)
+
+    d3.select("body").append('div')
+        .style("display", "block")
+        .attr("class", "m-3")
+        .attr("width", (+wsPanel.width) + "px")
+        .attr("height", (+window.innerHeight - wsPanel.height) + "px")
+        .attr("id", "tablediv")
 
     let arr = word_.map((entry, weekIndex) => {
         let obj = {}
         let raw = JSON.parse(entry.Words.split("'").join('"'))
-        console.log(raw)
-        let row = d3.keys(raw)
+        let row = d3.keys(raw).filter(d => d !== "datum")
             .filter(d => !removeList.includes(d))
             // .filter(d => raw[d].count > 1)
             .map(d => {
                 return {
-                    text: modify(d),
-                    frequency: raw[d].count,
+                    text: d !== "r" ? d : "R" ,
+                    frequency: d !== "data" ? raw[d].count : raw["data"].count + raw["datum"].count,
                     type: raw[d].type,
                 }
             })
             .sort((a, b) => +b.frequency - +a.frequency)
 
-        console.log(row)
         wordtype.forEach(type => {
             obj[type] = []
             obj[type] = row.filter(d => d.type === type).map(d => {
@@ -68,9 +60,7 @@ function loadData(error, records_, word__) {
     });
 
     function modify(word) {
-        if (word === "datum") {
-            return "data"
-        } else if (word === "r") {
+        if (word === "r") {
             return "R"
         } else return word
     }
@@ -94,8 +84,6 @@ function promptSelection() {
 
     let leftPanel = d3.select("#referBox")
         .append("div")
-        // .attr("class", "p-1")
-        // .style("left", (wsPanel.width) + "px")
         .style("width", (window.innerWidth - wsPanel.width - 30) + "px")
         .attr("id", "leftWrapper2")
 
