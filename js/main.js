@@ -200,8 +200,9 @@ function main(){
                 .on("mouseleave", function(){
                 })
                 .on("click", function (d) {
-                    selectedWord = d.text
-                    selectedType = d.type
+                    selectedWord = d.text;
+                    selectedType = d.type;
+                    wordQueue[d.type] = d.text;
                     displayTable()
                 })
         }
@@ -265,7 +266,28 @@ function main(){
                 '</tr>');
         });
 
-        highlightLemma(selectedWord, selectedType)
+        constructWordQ();
+        highlightLemma2(selectedWord)
+
+        function constructWordQ() {
+            let values = Object.values(wordQueue)
+            if (values.some(d => d.length > 0)) {
+                // something in the queue
+                values.filter(d => d.length > 0).forEach(d => {
+                    let lemmaflat = lemma[d] ? lemma[d] : [d.toLowerCase()]
+                    lemmaflat.forEach(l => {
+                        console.log(l);
+                        console.log(d);
+                        superObj[l] = d;
+                        console.log(superObj)
+                    })
+                })
+
+                d3.keys(wordQueue).filter(d => !!wordQueue[d]).forEach(item => {
+                    highlightLemma2(wordQueue[item], item)
+                })
+            }
+        }
 
         function removeDuplicates(string) {
             let obj = {}

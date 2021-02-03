@@ -1,5 +1,12 @@
 const wordtype = ["VERB", "NOUN", "ADJ"]
 
+let sentenceRecords,
+    wordQueue = {
+        "VERB": "",
+        "NOUN": "",
+        "ADJ": "",
+    }, superObj = {};
+
 function colorWord(type) {
     if (type === "NOUN"){
         return "#1F77B4"
@@ -9,3 +16,4 @@ function colorWord(type) {
     }
     else return "#2CA02C"
 }
+

@@ -1,9 +1,3 @@
-let sentenceRecords,
-    wordQueue = {
-        "VERB": "",
-        "NOUN": "",
-        "ADJ": "",
-    }, superObj = {};
 let records, word_
 // const selectedField = ["CourseID", "CourseName", "JournalEntryWeek", "StudentId", "YearQuarter", "Sentence"]
 const removeList = ["%", "d", "-", "thing", "will"]
@@ -151,15 +145,16 @@ function expandSentence(records) {
 
 function pullDataFromTextSelection() {
     // use wordQueue
+    // don't know if "queue" is the right word for it
     let values = Object.values(wordQueue)
     if (values.some(d => d.length > 0)) {
-        // something in it
+        // something in the queue
         let superArray = values.filter(d => d.length > 0).map(d => lemma[d] ? lemma[d] : [d.toLowerCase()])
 
         values.filter(d => d.length > 0).forEach(d => {
             let lemmaflat = lemma[d] ? lemma[d] : [d.toLowerCase()]
             lemmaflat.forEach(l => {
-                superObj[l] = d
+                superObj[l] = d;
             })
         })
 
@@ -175,61 +170,62 @@ function pullDataFromTextSelection() {
         })
 
     } else {
+        // no selection
         drawTable(flattenArray(sentenceRecords))
     }
 }
 
-function highlightLemma2(selectedWord, selectedType) {
-    if (selectedWord.length < 0) return  // empty string
 
-    if (document.getElementsByTagName('td').length === 1) return
-    let lemmas = lemma[selectedWord] ? lemma[selectedWord] : [selectedWord] // get additional if dictionary isn't
-    // enough
-
-    var instance = new Mark(document.querySelector("table"));
-    instance.mark(lemmas, {
-        "wildcards": "withSpaces",
-        "ignoreJoiners": true,
-        "acrossElements": true,
-        "accuracy": {
-            "value": "exactly",
-            "limiters": [
-                " ",
-                ".",
-                "\"",
-                "'",
-                "]",
-                "[",
-                "}",
-                "{",
-                ")",
-                "(",
-                "–",
-                "-",
-                ":",
-                ";",
-                "?",
-                "!",
-                ",",
-                "/",
-            ]
-        },
-    });
-
-    d3.selectAll("mark")
-        .style("background", function () {
-            return hexaChangeRGB(colorWord(getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])), 0.3)
-        })
-        .classed("highlight", true)
-        .html(function () {
-            return this.innerHTML.split("<")[0] + '<span style="color: ' + colorWord(getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])) + '">' + getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()]) + '</span>'
-            // return this.innerHTML.split("<")[0] + '<span>' + getKeyByValue(wordQueue,superObj[this.innerHTML.split("<")[0].toLowerCase()]) + '</span>'
-
-        })
-
-    // .html(selectedWord + '<span>' + selectedType + '</span>')
-}
-
+// function highlightLemma2(selectedWord) {
+//     if (selectedWord.length < 0) return  // empty string
+//
+//     if (document.getElementsByTagName('td').length === 1) return
+//     let lemmas = lemma[selectedWord] ? lemma[selectedWord] : [selectedWord] // get additional if dictionary isn't
+//     // enough
+//
+//     var instance = new Mark(document.querySelector("table"));
+//     instance.mark(lemmas, {
+//         "wildcards": "withSpaces",
+//         "ignoreJoiners": true,
+//         "acrossElements": true,
+//         "accuracy": {
+//             "value": "exactly",
+//             "limiters": [
+//                 " ",
+//                 ".",
+//                 "\"",
+//                 "'",
+//                 "]",
+//                 "[",
+//                 "}",
+//                 "{",
+//                 ")",
+//                 "(",
+//                 "–",
+//                 "-",
+//                 ":",
+//                 ";",
+//                 "?",
+//                 "!",
+//                 ",",
+//                 "/",
+//             ]
+//         },
+//     });
+//
+//     d3.selectAll("mark")
+//         .style("background", function () {
+//             return hexaChangeRGB(colorWord(getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])), 0.3)
+//         })
+//         .classed("highlight", true)
+//         .html(function () {
+//             return this.innerHTML.split("<")[0] + '<span style="color: ' + colorWord(getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])) + '">' + getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()]) + '</span>'
+//             // return this.innerHTML.split("<")[0] + '<span>' + getKeyByValue(wordQueue,superObj[this.innerHTML.split("<")[0].toLowerCase()]) + '</span>'
+//
+//         })
+//
+//     // .html(selectedWord + '<span>' + selectedType + '</span>')
+// }
 
 function drawTable(dataset) {
     let tablediv = d3.select('#tablediv');
