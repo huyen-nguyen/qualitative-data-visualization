@@ -112,27 +112,31 @@ function main(){
         // legend
         var legend = svg.append("g")
             .attr("font-family", "sans-serif")
-            .attr("font-size", 10)
+            .attr("font-size", 9)
             .attr("text-anchor", "start")
             .selectAll("g")
             .data(wordtype)
             .enter().append("g")
-            .attr("transform", function(d, i) { return "translate(-60," + (10+ i * 20) + ")"; });
+            .attr("transform", function(d, i) { return "translate(-" + (width-30)  + ","+ (10+ i * 15) + ")"; });
 
         legend.append("circle")
             .attr("cx", width - 25)
-            .attr("cy", 10)
-            .attr("r", 8)
-            .attr("height", 15)
+            .attr("cy", 6)
+            .attr("r", 5)
             .attr("fill",  d => colorWord(d))
-            .attr("stroke-width",2)
 
         legend.append("text")
-            .attr("x", width - 10)
-            .attr("y", 9.5)
+            .attr("x", width - 15)
+            .attr("y", 6)
             .attr("dy", "0.32em")
-            .attr("font-size", "13px")
-            .text((d,i) => wordtype[i].toLowerCase())
+            .attr("font-size", "12px")
+            .text((d,i) => wordtype[i][0].toUpperCase() + wordtype[i].substring(1).toLowerCase())
+
+        // legendNodes.append('text')
+        //     .text(d => d[0].toUpperCase() + d.substring(1).toLowerCase())
+        //     .attr('font-size', legendFont)
+        //     .attr('alignment-baseline', "middle")
+        //     .attr("dx", 10);
 
         // process data
 
@@ -158,6 +162,7 @@ function main(){
         function wordCloud(data) {
             d3.layout.cloud()
                 .size([width,height])
+                .font("sans-serif")
                 .words(data)
                 .rotate(()=>0)
                 .fontSize(d=>wordScale(d.frequency))
@@ -176,7 +181,7 @@ function main(){
                 .attr("class", "cloud-text")
                 .style("font-size",d=>d.size +"px")
                 .style("fill", d => colorWord(d.type))
-                .style("font-family", "serif")
+                .style("font-family", "sans-serif")
                 .attr("text-anchor","middle")
                 .attr("transform",d=>("translate(" + [d.x,d.y] +")rotate(" + d.rotate + ")"))
                 .text(d=>d.text === "r" ? "R" : d.text)
