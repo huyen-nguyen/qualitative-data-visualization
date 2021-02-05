@@ -2,7 +2,7 @@ let records, word_
 // const selectedField = ["CourseID", "CourseName", "JournalEntryWeek", "StudentId", "YearQuarter", "Sentence"]
 const removeList = ["%", "d", "-", "thing", "will"]
 const wsPanel = {width: (window.innerWidth * 2/3), height: 600}
-const selectedField = ["JournalEntryWeek", "StudentId", "YearQuarter", "Sentence"]
+const selectedField = ["JournalEntryWeek", "StudentId", "Sentence"]
 
 queue()
     .defer(d3.csv, 'data/vis-noun-data.csv')
