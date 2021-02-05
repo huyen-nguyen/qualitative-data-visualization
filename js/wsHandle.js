@@ -215,12 +215,12 @@ function pullDataFromTextSelection() {
 //
 //     d3.selectAll("mark")
 //         .style("background", function () {
-//             return hexaChangeRGB(colorWord(getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])), 0.3)
+//             return hexaChangeRGB(colorWord(getTypeByText(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])), 0.3)
 //         })
 //         .classed("highlight", true)
 //         .html(function () {
-//             return this.innerHTML.split("<")[0] + '<span style="color: ' + colorWord(getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])) + '">' + getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()]) + '</span>'
-//             // return this.innerHTML.split("<")[0] + '<span>' + getKeyByValue(wordQueue,superObj[this.innerHTML.split("<")[0].toLowerCase()]) + '</span>'
+//             return this.innerHTML.split("<")[0] + '<span style="color: ' + colorWord(getTypeByText(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])) + '">' + getTypeByText(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()]) + '</span>'
+//             // return this.innerHTML.split("<")[0] + '<span>' + getTypeByText(wordQueue,superObj[this.innerHTML.split("<")[0].toLowerCase()]) + '</span>'
 //
 //         })
 //

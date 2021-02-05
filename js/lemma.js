@@ -90,22 +90,17 @@ function highlightLemma(selectedWord) {
 
     d3.selectAll("mark")
         .style("background", function () {
-            return hexaChangeRGB(colorWord(getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])), 0.3)
+            return hexaChangeRGB(colorWord(getTypeByText(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])), 0.3)
         })
         .classed("highlight", true)
         .html(function () {
-            return this.innerHTML.split("<")[0] + '<span style="color: ' + colorWord(getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()])) + '">' + getKeyByValue(wordQueue, superObj[this.innerHTML.split("<")[0].toLowerCase()]) + '</span>'
-            // return this.innerHTML.split("<")[0] + '<span>' + getKeyByValue(wordQueue,superObj[this.innerHTML.split("<")[0].toLowerCase()]) + '</span>'
-
+            let item = superObj[this.innerHTML.split("<")[0].toLowerCase()]
+            return this.innerHTML.split("<")[0] + '<span style="color: ' + colorWord(getTypeByText(wordQueue, item)) + '">' + getTypeByText(wordQueue, item) + '</span>'
         })
-
-    console.log(wordQueue, superObj)
-
-    // .html(selectedWord + '<span>' + selectedType + '</span>')
 }
 
-function getKeyByValue(object, value) {
-    return Object.keys(object).find(key => object[key] === value);
+function getTypeByText(object, value) {
+    return Object.keys(object).find(key => object[key].includes(value));
 }
 function hexaChangeRGB(hex, alpha) {
     var r = parseInt(hex.slice(1, 3), 16),

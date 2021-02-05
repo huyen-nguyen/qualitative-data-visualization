@@ -192,24 +192,30 @@ function main(){
                 .on("click", function (d) {
                     selectedWord = d.text;
                     selectedType = d.type;
-                    wordQueue[d.type] = d.text;
-                    displayTable()
 
-                    if (clickTable[d.text]){
+                    if (clickTable[d.text]){ // if already existed
+                        // update data
                         clickTable[d.text] = false;
+                        wordQueue[d.type] = wordQueue[d.type].replace(d.text, "");
+
+                        // animation
                         d3.select(this)
                             .classed("selected-text", false)
                             .style("stroke-width", "2px")
                             .style("stroke-opacity", "1")
+
                     }
-                    else{
+                    else{ // if not existed
+                        // add to queue
                         clickTable[d.text] = true;
+                        wordQueue[d.type] += " "+d.text;
+
                         d3.select(this)
                             .classed("selected-text", true)
                             .style("stroke-width", "5px")
                             .style("stroke-opacity", "0.4")
                     }
-                    console.log(clickTable)
+                    displayTable()
                 })
                 .on("mouseenter", function (d) {
                     d3.select(this)
@@ -297,8 +303,7 @@ function main(){
                 '</tr>');
         });
 
-        constructWordQ();
-        highlightLemma(selectedWord)
+        constructSuperObj();
 
         function removeDuplicates(string) {
             let obj = {}
@@ -310,19 +315,23 @@ function main(){
         }
     }
 
-    function constructWordQ() {
+    function constructSuperObj() {
         let values = Object.values(wordQueue)
         if (values.some(d => d.length > 0)) {
             // something in the queue
-            values.filter(d => d.length > 0).forEach(d => {
-                let lemmaflat = lemma[d] ? lemma[d] : [d.toLowerCase()]
-                lemmaflat.forEach(l => {
-                    superObj[l] = d;
+            values.filter(d => d.length > 0).forEach(rootString => {
+                rootString.trim().split(" ").forEach(root => {
+                    let d = root.trim()
+                    let lemmaflat = lemma[d] ? lemma[d] : [d.toLowerCase()]
+                    lemmaflat.forEach(l => {
+                        superObj[l] = d;
+                    })
                 })
             })
 
-            d3.keys(wordQueue).filter(d => !!wordQueue[d]).forEach(item => {
-                highlightLemma(wordQueue[item], item)
+            let wordlist = values.join(" ").trim().split(" ").filter(e => e.length > 0)
+            wordlist.forEach(word => {
+                highlightLemma(word)
             })
         }
     }
