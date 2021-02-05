@@ -9,49 +9,49 @@ function run(error, lemma_) {
     lemma = lemma_
 }
 
-function highlightLemma(selectedWord, selectedType) {
-    if (selectedWord.length < 0) return  // empty string
+// function highlightLemmaSingle(selectedWord, selectedType) {
+//     if (selectedWord.length < 0) return  // empty string
+//
+//     let lemmas = lemma[selectedWord] ? lemma[selectedWord]: [selectedWord] // get additional if dictionary isn't
+//     // enough
+//
+//     var instance = new Mark(document.querySelector("table"));
+//     instance.mark(lemmas, {
+//         "wildcards": "withSpaces",
+//         "ignoreJoiners": true,
+//         "acrossElements": true,
+//         "accuracy": {
+//             "value": "exactly",
+//             "limiters": [
+//                 " ",
+//                 ".",
+//                 "\"",
+//                 "'",
+//                 "]",
+//                 "[",
+//                 "}",
+//                 "{",
+//                 ")",
+//                 "(",
+//                 "–",
+//                 "-",
+//                 ":",
+//                 ";",
+//                 "?",
+//                 "!",
+//                 ",",
+//                 "/",
+//             ]
+//         },
+//     });
+//
+//     d3.selectAll("mark")
+//         .style("background", hexaChangeRGB(colorWord(selectedType), 0.4))
+//         .classed("highlight", true)
+//         // .html(selectedWord + '<span>' + selectedType + '</span>')
+// }
 
-    let lemmas = lemma[selectedWord] ? lemma[selectedWord]: [selectedWord] // get additional if dictionary isn't
-    // enough
-
-    var instance = new Mark(document.querySelector("table"));
-    instance.mark(lemmas, {
-        "wildcards": "withSpaces",
-        "ignoreJoiners": true,
-        "acrossElements": true,
-        "accuracy": {
-            "value": "exactly",
-            "limiters": [
-                " ",
-                ".",
-                "\"",
-                "'",
-                "]",
-                "[",
-                "}",
-                "{",
-                ")",
-                "(",
-                "–",
-                "-",
-                ":",
-                ";",
-                "?",
-                "!",
-                ",",
-                "/",
-            ]
-        },
-    });
-
-    d3.selectAll("mark")
-        .style("background", hexaChangeRGB(colorWord(selectedType), 0.4))
-        .classed("highlight", true)
-        // .html(selectedWord + '<span>' + selectedType + '</span>')
-}
-
-function highlightLemma2(selectedWord) {
+function highlightLemma(selectedWord) {
     if (selectedWord.length < 0) return  // empty string
 
     if (document.getElementsByTagName('td').length === 1) return

@@ -8,6 +8,7 @@ function main(){
     let selectedWord = "@@", selectedType = ""
     let allchunksObj = {}, allchunks = []
     let wcHeight = 480
+    let clickTable = {};
 
     queue()
         .defer(d3.csv, 'data/vis-noun-data.csv')
@@ -182,28 +183,58 @@ function main(){
                 .style("font-size",d=>d.size +"px")
                 .style("fill", d => colorWord(d.type))
                 .style("font-family", "sans-serif")
+                .style("stroke",d => colorWord(d.type))
+                .style("stroke-width", "0px")
                 .attr("text-anchor","middle")
                 .attr("transform",d=>("translate(" + [d.x,d.y] +")rotate(" + d.rotate + ")"))
                 .text(d=>d.text === "r" ? "R" : d.text)
                 .style("cursor", "pointer")
-                .on("mouseover", function (d) {
-                    d3.select(this)
-                        .style("stroke-width", "1.5px")
-                        .style("stroke",d => colorWord(d.type))
-                        // .style("stroke-opacity","0.7")
-                })
-                .on("mouseout", function (d) {
-                    d3.selectAll(".cloud-text")
-                        .style("opacity", 1)
-                        .style("stroke-width", "0px")
-                })
-                .on("mouseleave", function(){
-                })
                 .on("click", function (d) {
                     selectedWord = d.text;
                     selectedType = d.type;
                     wordQueue[d.type] = d.text;
                     displayTable()
+
+                    if (clickTable[d.text]){
+                        clickTable[d.text] = false;
+                        d3.select(this)
+                            .classed("selected-text", false)
+                            .style("stroke-width", "2px")
+                            .style("stroke-opacity", "1")
+                    }
+                    else{
+                        clickTable[d.text] = true;
+                        d3.select(this)
+                            .classed("selected-text", true)
+                            .style("stroke-width", "5px")
+                            .style("stroke-opacity", "0.4")
+                    }
+                    console.log(clickTable)
+                })
+                .on("mouseenter", function (d) {
+                    d3.select(this)
+                        .style("stroke-width", () => {
+                            if (d3.select(this).attr("class").includes("selected-text")){
+                                return "7px"
+                            }
+                            return "2px"
+                        })
+                        .style("stroke-opacity",() => {
+                            if (d3.select(this).attr("class").includes("selected-text")){
+                                return "0.4"
+                            }
+                            return  "1"
+                        })
+
+                })
+                .on("mouseout", function (d) {
+                    d3.selectAll(".cloud-text")
+                        .style("stroke-opacity", 1)
+                        .style("stroke-width", "0px");
+
+                    d3.selectAll(".selected-text")
+                        .style("stroke-width", "5px")
+                        .style("stroke-opacity", "0.4")
                 })
         }
 
@@ -267,27 +298,7 @@ function main(){
         });
 
         constructWordQ();
-        highlightLemma2(selectedWord)
-
-        function constructWordQ() {
-            let values = Object.values(wordQueue)
-            if (values.some(d => d.length > 0)) {
-                // something in the queue
-                values.filter(d => d.length > 0).forEach(d => {
-                    let lemmaflat = lemma[d] ? lemma[d] : [d.toLowerCase()]
-                    lemmaflat.forEach(l => {
-                        console.log(l);
-                        console.log(d);
-                        superObj[l] = d;
-                        console.log(superObj)
-                    })
-                })
-
-                d3.keys(wordQueue).filter(d => !!wordQueue[d]).forEach(item => {
-                    highlightLemma2(wordQueue[item], item)
-                })
-            }
-        }
+        highlightLemma(selectedWord)
 
         function removeDuplicates(string) {
             let obj = {}
@@ -296,6 +307,23 @@ function main(){
                 obj[d] = true
             })
             return d3.keys(obj).join(", ")
+        }
+    }
+
+    function constructWordQ() {
+        let values = Object.values(wordQueue)
+        if (values.some(d => d.length > 0)) {
+            // something in the queue
+            values.filter(d => d.length > 0).forEach(d => {
+                let lemmaflat = lemma[d] ? lemma[d] : [d.toLowerCase()]
+                lemmaflat.forEach(l => {
+                    superObj[l] = d;
+                })
+            })
+
+            d3.keys(wordQueue).filter(d => !!wordQueue[d]).forEach(item => {
+                highlightLemma(wordQueue[item], item)
+            })
         }
     }
 

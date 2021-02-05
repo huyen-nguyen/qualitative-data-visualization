@@ -108,3 +108,7 @@ mark span{
     margin-left: 0.3rem;
     color: #424242;
 }
+
+.cloud-text{
+    transition: 0.1s;
+}

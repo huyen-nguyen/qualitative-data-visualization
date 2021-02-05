@@ -166,7 +166,7 @@ function pullDataFromTextSelection() {
 
         drawTable(flattenArray(dataset))
         d3.keys(wordQueue).filter(d => !!wordQueue[d]).forEach(item => {
-            highlightLemma2(wordQueue[item], item)
+            highlightLemma(wordQueue[item], item)
         })
 
     } else {
@@ -176,7 +176,7 @@ function pullDataFromTextSelection() {
 }
 
 
-// function highlightLemma2(selectedWord) {
+// function highlightLemma(selectedWord) {
 //     if (selectedWord.length < 0) return  // empty string
 //
 //     if (document.getElementsByTagName('td').length === 1) return
