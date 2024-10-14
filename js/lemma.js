@@ -62,7 +62,7 @@ function highlightLemma(selectedWord) {
     instance.mark(lemmas, {
         "wildcards": "withSpaces",
         "ignoreJoiners": true,
-        "acrossElements": true,
+        "acrossElements": false,
         "accuracy": {
             "value": "exactly",
             "limiters": [
